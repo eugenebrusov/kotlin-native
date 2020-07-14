@@ -13,17 +13,13 @@ import kotlin.toString
 /**
  * Retrieves the content by the given URL and shows it at the given WebKitView
  */
-fun getAndShow(url: String, contentView: UITextView) {
+fun getAndShow(url: String, callback: NetCallback) {
     val manager = AFHTTPSessionManager()
     manager.responseSerializer = AFHTTPResponseSerializer()
     val onSuccess = { _: NSURLSessionDataTask?, response: Any? ->
-        val html = NSAttributedString.create(
-            data = response as NSData,
-            options = mapOf(NSDocumentTypeDocumentAttribute as Any? to NSHTMLTextDocumentType),
-            documentAttributes = null,
-            error = null
-        )!!
-        contentView.attributedText = html
+	val data = response as NSData
+	val text = NSString.create(data, NSUTF8StringEncoding)!!
+        callback.onSuccess(text)
     }
     val onError = { _: NSURLSessionDataTask?, error: NSError? ->
         NSLog("Cannot get ${url}.")
