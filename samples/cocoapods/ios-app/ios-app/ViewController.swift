@@ -16,7 +16,6 @@ class ViewController: UIViewController {
         
         override func onSuccess(text: String) {
             success(text)
-            //indicator.stopAnimating()
         }
     }
     
@@ -28,10 +27,10 @@ class ViewController: UIViewController {
     @IBAction func onGoTouch(_ sender: Any) {
         self.textLabel.isHidden = true
         indicator.startAnimating()
-        KotlinLibKt.getAndShow(url: "https://run.mocky.io/v3/93d2dccc-a42a-4f9e-bf22-35489c842b0e", callback: MyCallback(success: { text in
-                self.textLabel.isHidden = false
-                self.textLabel.text = text
-                self.indicator.stopAnimating()
+        KotlinLibKt.getAndShow(url: "https://run.mocky.io/v3/93d2dccc-a42a-4f9e-bf22-35489c842b0e", callback: MyCallback(success: { [weak self] text in
+                self?.textLabel.isHidden = false
+                self?.textLabel.text = text
+                self?.indicator.stopAnimating()
             }))
     }
 }
